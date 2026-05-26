@@ -114,6 +114,21 @@ class ProductModel
         return false;
     }
 
+    public function getProductsByCategory($category_id)
+    {
+        $query = "SELECT p.*, c.name as category_name
+                FROM product p
+                LEFT JOIN category c ON p.category_id = c.id
+                WHERE p.category_id = :category_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':category_id', $category_id);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
     
 }
 ?>

@@ -19,6 +19,33 @@
 
     </div>
 
+    <!-- CATEGORY FILTER -->
+    <section class="mb-12 flex flex-wrap gap-3 overflow-x-auto pb-2">
+
+        <!-- ALL -->
+        <a href="/webbanhang/Product"
+           class="px-5 py-2.5 rounded-full text-sm font-semibold transition-all
+           <?php echo !isset($_GET['category']) ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'; ?>">
+            Tất cả
+        </a>
+
+        <!-- CATEGORY BUTTON -->
+        <?php foreach ($categories as $category): ?>
+
+            <a href="/webbanhang/Product?category=<?php echo $category->id; ?>"
+               class="px-5 py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap
+               <?php echo (isset($_GET['category']) && $_GET['category'] == $category->id)
+                    ? 'bg-black text-white'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'; ?>">
+
+                <?php echo htmlspecialchars($category->name, ENT_QUOTES, 'UTF-8'); ?>
+
+            </a>
+
+        <?php endforeach; ?>
+
+    </section>
+
     <!-- PRODUCT GRID -->
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
 
@@ -52,6 +79,29 @@
                     </div>
 
                 <?php endif; ?>
+                
+                <button
+                    class="add-to-cart-btn 
+                            absolute bottom-6 right-6 
+                            w-12 h-12 
+                            rounded-full 
+                            bg-blue-600 
+                            text-white flex 
+                            items-center justify-center 
+                            shadow-lg
+                            transform translate-y-4 opacity-0
+                            group-hover:translate-y-0
+                            group-hover:opacity-100
+                            hover:scale-110
+                            active:scale-95
+                            transition-all duration-300"
+                    data-id="<?php echo $product->id; ?>"
+                >
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                </button>
+
 
             </div>
 
@@ -158,4 +208,41 @@
 
 </main>
 
+<script>
+
+document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+
+    button.addEventListener('click', async () => {
+
+        const productId = button.dataset.id;
+
+        try {
+
+            const response = await fetch(`/webbanhang/Product/addToCart/${productId}`);
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                const cartCount = document.getElementById('cart-count');
+
+                cartCount.innerText = data.totalQuantity;
+
+                cartCount.classList.remove('hidden');
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    });
+
+});
+
+</script>
+
 <?php include 'app/views/shares/footer.php'; ?>
+

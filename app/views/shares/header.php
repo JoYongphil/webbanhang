@@ -81,9 +81,33 @@
                 <div class="flex items-center gap-4">
 
                     <!-- SEARCH -->
-                    <button class="hover:text-blue-400 transition">
-                        <span class="material-symbols-outlined">search</span>
-                    </button>
+
+                    <?php
+                        $count = 0;
+
+                        if (isset($_SESSION['cart'])) {
+                            foreach ($_SESSION['cart'] as $item) {
+                                $count += $item['quantity'];
+                            }
+                        }
+                    ?>
+                    
+                    <a href="/webbanhang/Product/cart" 
+                       class="relative hover:text-blue-400 transition">
+                        
+                       <span class="material-symbols-outlined">
+                            shopping_bag
+                       </span>
+
+                       <span id="cart-count"
+                            class="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center
+                            <?php echo $count <= 0 ? 'hidden' : ''; ?>">
+
+                            <?php echo $count; ?>
+
+                        </span>
+
+                    </a>
 
                     <!-- USER -->
                     <button class="hover:text-blue-400 transition">
