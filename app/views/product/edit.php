@@ -226,7 +226,7 @@
                 <div class="pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-center gap-4">
 
                     <button type="submit"
-                            class="min-w-[220px] h-[56px] px-10 rounded-full bg-primary-container text-white font-semibold hover:opacity-90 active:scale-95 transition-all">
+                            class="min-w-[220px] h-[56px] px-10 rounded-full bg-primary-container text-primary font-semibold hover:opacity-90 active:scale-95 transition-all">
 
                         Lưu thay đổi
 
