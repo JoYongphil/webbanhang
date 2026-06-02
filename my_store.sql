@@ -14,13 +14,86 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Data exporting was unselected.
 
--- Data exporting was unselected.
+-- Dumping database structure for my_store
+CREATE DATABASE IF NOT EXISTS `my_store` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `my_store`;
 
--- Data exporting was unselected.
+-- Dumping structure for table my_store.account
+CREATE TABLE IF NOT EXISTS `account` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','user') DEFAULT 'user',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table my_store.account: ~2 rows (approximately)
+INSERT INTO `account` (`id`, `username`, `fullname`, `password`, `role`) VALUES
+	(1, 'admin@gmail.com', 'Admin', '$2y$12$7l9MvYHyhGJ0oxezLlFB4uJ2gH089ZbNdMLvwB.Sj97U1NiJBug/i', 'admin'),
+	(2, 'User01@gmail.com', 'User01', '$2y$12$cfUiHw557zw1Ek6PX7bkk.pt8YNczXdsxl7.D6YIU12Gp8j7WhMQ2', 'user');
+
+-- Dumping structure for table my_store.category
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table my_store.category: ~6 rows (approximately)
+INSERT INTO `category` (`id`, `name`, `description`) VALUES
+	(1, 'IPhone', 'Danh mục các loại điện thoại'),
+	(2, 'MAC', 'Danh mục các loại laptop'),
+	(3, 'IPad', 'Danh mục các loại máy tính bảng'),
+	(4, 'Phụ kiện', 'Danh mục phụ kiện điện tử'),
+	(5, 'Air Pods', 'Danh mục loa, tai nghe, micro'),
+	(16, 'Apple Watch', 'Đông hồ thông minh');
+
+-- Dumping structure for table my_store.orders
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `address` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table my_store.orders: ~0 rows (approximately)
+
+-- Dumping structure for table my_store.order_details
+CREATE TABLE IF NOT EXISTS `order_details` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_order_details_order` (`order_id`),
+  KEY `idx_order_details_product` (`product_id`),
+  CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table my_store.order_details: ~0 rows (approximately)
+
+-- Dumping structure for table my_store.product
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  `price` decimal(10,2) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_product_category` (`category_id`),
+  CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table my_store.product: ~0 rows (approximately)
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

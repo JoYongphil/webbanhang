@@ -17,6 +17,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
     <style>
+
+        body{
+            font-family:'Inter',sans-serif;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -50,6 +55,7 @@
 
                 <!-- MENU DESKTOP -->
                 <ul class="hidden md:flex items-center gap-8 text-sm">
+                    <?php if (SessionHelper::isAdmin()): ?>
                     <li>
                         <a href="/webbanhang/Product/" 
                            class="hover:text-blue-400 transition">
@@ -58,23 +64,24 @@
                     </li>
 
                     <li>
-                        <a href="/webbanhang/Product/add" 
-                           class="hover:text-blue-400 transition">
+                        <a href="/webbanhang/Product/add"
+                        class="hover:text-blue-400 transition">
                             Thêm sản phẩm
                         </a>
                     </li>
-
+                    
                     <li>
                         <a href="/webbanhang/Category/list" class="hover:text-blue-400 transition">
                             Danh mục
                         </a>
                     </li>
-
+                    
                     <li>
                         <a href="#" class="hover:text-blue-400 transition">
                             Thống kê
                         </a>
                     </li>
+                    <?php endif; ?>
                 </ul>
 
                 <!-- ACTIONS -->
@@ -110,9 +117,34 @@
                     </a>
 
                     <!-- USER -->
-                    <button class="hover:text-blue-400 transition">
-                        <span class="material-symbols-outlined">person</span>
-                    </button>
+                    <div class="flex items-center gap-4">
+
+                        <?php if (SessionHelper::isLoggedIn()): ?>
+
+                            <!-- Username -->
+                            <span class="flex items-center gap-1 text-sm">
+                                <span class="material-symbols-outlined">person</span>
+                                <?php echo $_SESSION['username']; ?>
+                            </span>
+
+                            <!-- Logout -->
+                            <a href="/webbanhang/account/logout"
+                            class="text-sm hover:text-red-400 transition">
+                                Đăng xuất
+                            </a>
+
+                        <?php else: ?>
+
+                            <!-- Login -->
+                            <a href="/webbanhang/account/login"
+                            class="flex items-center gap-1 hover:text-blue-400 transition">
+                                <span class="material-symbols-outlined">person</span>
+                                Đăng nhập
+                            </a>
+
+                        <?php endif; ?>
+
+                    </div>
 
                     <!-- MOBILE MENU -->
                     <button id="menuBtn" 
@@ -135,10 +167,12 @@
                 </div>
 
                 <!-- BUTTON -->
+                <?php if (SessionHelper::isAdmin()): ?>
                 <a href="/webbanhang/Product/add"
                    class="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-2 rounded-full text-sm font-medium shadow">
                     + Thêm sản phẩm
                 </a>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -170,6 +204,30 @@
                         Thống kê
                     </a>
                 </li>
+
+                <?php if (SessionHelper::isLoggedIn()): ?>
+
+                <li class="text-gray-300">
+                    Xin chào, <?php echo $_SESSION['username']; ?>
+                </li>
+
+                <li>
+                    <a href="/webbanhang/account/logout"
+                    class="block hover:text-red-400">
+                        Đăng xuất
+                    </a>
+                </li>
+
+                <?php else: ?>
+
+                <li>
+                    <a href="/webbanhang/account/login"
+                    class="block hover:text-blue-400">
+                        Đăng nhập
+                    </a>
+                </li>
+
+                <?php endif; ?>
             </ul>
         </div>
 

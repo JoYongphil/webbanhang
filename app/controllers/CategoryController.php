@@ -14,8 +14,17 @@ class CategoryController
         $this->categoryModel = new CategoryModel($this->db);
     }
 
+    private function isAdmin()
+    {
+        return SessionHelper::isAdmin();
+    }
+
     public function list()
     {
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
         $categories = $this->categoryModel->getCategories();
         include 'app/views/category/list.php';
     }
@@ -23,12 +32,21 @@ class CategoryController
     // Hiển thị form thêm
     public function add()
     {
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
         include 'app/views/category/add.php';
     }
 
     // Lưu category mới
     public function save()
     {
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $name = $_POST['name'] ?? '';
@@ -54,6 +72,12 @@ class CategoryController
     // Hiển thị form sửa
     public function edit($id)
     {
+
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
+
         $category = $this->categoryModel->getCategoryById($id);
 
         if ($category) {
@@ -70,6 +94,11 @@ class CategoryController
     // Cập nhật category
     public function update()
     {
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $id = $_POST['id'];
@@ -97,6 +126,11 @@ class CategoryController
     // Xóa category
     public function delete($id)
     {
+        if (!$this->isAdmin()) {
+            echo "Bạn không có quyền truy cập chức năng này!";
+            exit;
+        }
+        
         $result = $this->categoryModel->deleteCategory($id);
 
         if ($result) {

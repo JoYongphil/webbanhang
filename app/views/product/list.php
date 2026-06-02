@@ -149,6 +149,7 @@
                     </a>
 
                     <!-- BUTTONS -->
+                    <?php if (SessionHelper::isAdmin()): ?>
                     <div class="flex items-center gap-2">
 
                         <!-- EDIT -->
@@ -173,7 +174,7 @@
                         </a>
 
                     </div>
-
+                    <?php endif; ?>
                 </div>
 
             </div>
@@ -183,6 +184,7 @@
         <?php endforeach; ?>
 
         <!-- ADD NEW CARD -->
+        <?php if (SessionHelper::isAdmin()): ?>
         <a href="/webbanhang/Product/add"
            class="rounded-[28px] border-2 border-dashed border-gray-300 bg-white/50 hover:bg-white hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center min-h-[520px] group">
 
@@ -203,7 +205,7 @@
             </p>
 
         </a>
-
+        <?php endif; ?>
     </div>
 
 </main>
